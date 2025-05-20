@@ -1,0 +1,64 @@
+name: Docker
+
+on:
+  push:
+    tags:
+      - v*
+
+env:
+  IMAGE_NAME: almanax-api
+
+jobs:
+  # Run tests.
+  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.2
+
+      - name: Run tests
+        run: |
+          if [ -f docker-compose.test.yml ]; then
+            docker-compose --file docker-compose.test.yml build
+            docker-compose --file docker-compose.test.yml run sut
+          fi
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    # Ensure test job passes before pushing image.
+    needs: test
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4.1.2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Extract version from Git tag
+        id: vars
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Build image with jar
+        env:
+          GITHUB_USERNAME: ${{ secrets.G_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+        run: ./mvnw clean package --settings settings.xml -DskipTests -Dquarkus.package.type=fast-jar && docker build -f src/main/docker/Dockerfile.fast-jar -t runner/$IMAGE_NAME:1.0-SNAPSHOT .
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u stelzo --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_READY=stelzo/$IMAGE_NAME
+          docker tag runner/$IMAGE_NAME:1.0-SNAPSHOT $IMAGE_READY:java-${{ env.VERSION }}
+          docker push $IMAGE_READY:java-${{ env.VERSION }}
