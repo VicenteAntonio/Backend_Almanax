@@ -15,8 +15,11 @@ mvn clean install
 java --version
 
 # 2.- Levantar la base de datos
+sudo service docker start
+docker-compose up -d
 
 # 3.- Dar permisos de ejecución al wrapper de Maven
+chmod +x ./mvnw
 
 # 4.- Ejecutar el wrapper de Maven en modo dev
 

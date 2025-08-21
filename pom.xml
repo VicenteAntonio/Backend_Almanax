@@ -18,7 +18,6 @@
     <quarkus.platform.version>3.9.1</quarkus.platform.version>
     <surefire-plugin.version>3.2.5</surefire-plugin.version>
   </properties>
-  <!-- Comentando temporalmente para pruebas locales
   <repositories>
     <repository>
         <id>github</id>
@@ -27,8 +26,7 @@
             <enabled>true</enabled>
         </snapshots>
     </repository>
-  </repositories>
-  -->
+</repositories>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -54,13 +52,11 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-cache</artifactId>
     </dependency>
-    <!-- Comentando temporalmente para pruebas locales
     <dependency>
       <groupId>com.dofusdude</groupId>
       <artifactId>dofusdude-java</artifactId>
       <version>${dofusdude.version}</version>
     </dependency>
-    -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
