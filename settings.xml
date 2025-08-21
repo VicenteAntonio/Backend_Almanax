@@ -12,7 +12,7 @@
             <repositories>
                 <repository>
                     <id>github</id>
-                    <name>GitHub dofusdude Apache Maven Packages</name>
+                    <n>GitHub dofusdude Apache Maven Packages</n>
                     <url>https://maven.pkg.github.com/dofusdude/dofusdude-java</url>
                 </repository>
             </repositories>
@@ -22,8 +22,8 @@
     <servers>
         <server>
             <id>github</id>
-            <username>${env.GITHUB_USERNAME}</username>
-            <password>${env.GITHUB_TOKEN}</password>
+            <username>tu_usuario_de_github</username>
+            <password>tu_token_personal_de_github</password>
         </server>
     </servers>
 </settings>
