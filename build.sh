@@ -11,6 +11,7 @@ dos2unix ./mvnw
 mvn clean install
 
 # Para ejecutar localmente el directorio Backend_Almanax
+<<<<<<< HEAD
 # 1.- Verificar versión de Java (17):
 java --version
 
@@ -24,3 +25,5 @@ chmod +x ./mvnw
 # 4.- Ejecutar el wrapper de Maven en modo dev
 
 ./mvnw compile quarkus:dev  # o mvn compile quarkus:dev
+=======
+>>>>>>> d0d159c... config: Improves the build script by adding installation of necessary utilities and commands to run Maven.
